@@ -1,7 +1,7 @@
 #include <MKL25Z4.h>
-// Paulo Ricardo Klaudat Neto - 275760
-// Lucas Raupp Hans - 275761
-// João Vitor Cabrera - 00281729
+// Paulo Ricardo Klaudat Neto
+// Lucas Raupp Hans
+
 int tempo;
 short stop; // stop = 1 para
 short posic=0;
@@ -31,7 +31,7 @@ void reset(programa *prog){
 	prog->reseta_programa = 0;
 	prog->menu = 0;
 	tempo = 0;
-	stop = 1; // não utilizada no inicio do programa
+	stop = 1; // nÃ£o utilizada no inicio do programa
 	for(i=0;i<4;i++)
 	prog->time[i] = '0';
 	prog->conta_stop=0;
@@ -111,7 +111,7 @@ void inicializa_kit(){
 	GPIOB_PDDR &= ~(1<<2);
 	GPIOB_PDDR &= ~(1<<3);
 	GPIOC_PDDR = (1<<8)+(1<<9)+(1<<10)+(1<<11);
-	GPIOC_PDDR |= (1<<1); // Saída no pino 1 - Lâmpada 
+	GPIOC_PDDR |= (1<<1); // SaÃ­da no pino 1 - LÃ¢mpada 
 	GPIOC_PDDR &= ~(1<<2); // Entrada Pino 2 - Porta 
 	
 	PORTC_PCR1 = (1<<8);
@@ -127,7 +127,7 @@ void inicializa_kit(){
 	PORTE_PCR5 = (1<<8);
 	PORTE_PCR23 = (1<<8); //E
 	PORTE_PCR29 = (1<<8); // RS
-	PORTE_PCR30 = (1<<8); // saída periodica 
+	PORTE_PCR30 = (1<<8); // saÃ­da periodica 
 	PORTE_PCR8 = (1<<8);
 	PORTE_PCR9 = (1<<8);
 	PORTE_PCR10 = (1<<8);
@@ -154,9 +154,9 @@ void inicializa_kit(){
 	PIT_TCTRL0 = (1<<1)+1; 
 	NVIC_EnableIRQ(PIT_IRQn);	
 	
-	// PWM - Prato para três triges tristes
+	// PWM - Prato para trÃªs triges tristes
 	SIM_SCGC6 |= (1<<25); // Habilita TPM1 
-	GPIOE_PDDR |= (1<<20); // configura pino 20 como saída
+	GPIOE_PDDR |= (1<<20); // configura pino 20 como saÃ­da
 	PORTE_PCR20 = (3<<8); // TPM1CH 0
 	TPM1_SC = (1<<3)+3; //clock interno prescaler 8
 	TPM1_MOD = 40000; // 15ms
@@ -169,7 +169,7 @@ void inicializa_kit(){
 	GPIOE_PDDR |= (1<<30); //comfigura como saida
 	PORTE_PCR30 = 3;
 	DAC0_C0 = (1 << 7); //DACEN = 1 (habilita DAC)
-	saida = 2500; // Inicia em potência média
+	saida = 2500; // Inicia em potÃªncia mÃ©dia
 	DAC0_DAT0H = saida/256;
 	DAC0_DAT0L = saida;
 	
@@ -180,7 +180,7 @@ void inicializa_kit(){
 	ADC0_CFG1 = (1<<2); //12 bits
   ADC0_SC1A = 0x03;
 	ADC0_SC3 = 2; // media 16 amostras
-	// Temperatura ambiente 1.38 V : 28º
+	// Temperatura ambiente 1.38 V : 28Âº
 	
 	// ADC umidade 
 	ADC0_SC1B = 0x07; // liga canal 7 pino D6
@@ -342,7 +342,7 @@ void le_teclado(programa *prog){
 	// L1 -> L4 : PTC 11 -> 8
 	// C1 -> C4 : PTB 3 -> 0
 	if((GPIOC_PDIR&(1<<2))==0){
-		// GPIOC_PCOR = (1<<1); // Se a porta abrir desliga a Lâmpada;
+		// GPIOC_PCOR = (1<<1); // Se a porta abrir desliga a LÃ¢mpada;
 		porta_aberta = 1;
 		stop = 1;
 		GPIOC_PSOR = (1<<1);
@@ -484,7 +484,7 @@ void le_teclado(programa *prog){
 				}			
 				
 		break;
-		case 'C': // Prato Rápido
+		case 'C': // Prato RÃ¡pido
 			//lcd_printf("C");
 			
 			if(stop==1){
@@ -544,7 +544,7 @@ void le_teclado(programa *prog){
 			if(prog->menu==1){
 				stop = 1;
 				prog->conta_stop = 1; // Quando testar conta stop de novo e for 1, reseta o programa.
-				GPIOC_PCOR = (1<<1); // Desliga lâmpada
+				GPIOC_PCOR = (1<<1); // Desliga lÃ¢mpada
 				GPIOC_PCOR = (1<<12); // Desliga o grill
 			}
 			
@@ -563,11 +563,11 @@ void le_teclado(programa *prog){
 			if(prog->menu==1){
 				stop=0;
 				posic=1;
-				GPIOC_PSOR = (1<<1); //Liga Lâmpada
+				GPIOC_PSOR = (1<<1); //Liga LÃ¢mpada
 			}
 			if(prog->menu==0 & porta_aberta==0){
 				prog->menu = 1;
-				GPIOC_PSOR = (1<<1); // Liga lâmpada
+				GPIOC_PSOR = (1<<1); // Liga lÃ¢mpada
 			}
 			if(prog->menu==2 & porta_aberta==0){
 				stop=0;
@@ -714,7 +714,7 @@ void PIT_IRQHandler(){ // Conta Tempo e printa contagem regressiva
 	
 	PIT_TFLG0 = 1;
 
-	// Lê o valor do potênciometro para definir a umidade
+	// LÃª o valor do potÃªnciometro para definir a umidade
 	if(descongelar==1) {
 	ADC0_CFG2  = 0;
 	ADC0_SC1B = 31;
